@@ -1,0 +1,3 @@
+[console_scripts]
+jgo = jgo:main
+

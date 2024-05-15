@@ -1,0 +1,69 @@
+version: "3.8"
+
+
+volumes:
+  image-network:
+    driver_opts:
+      type: "cifs"
+      o: "username=mbair7@kent.edu,password=nix4*4KcYK*8qqP,vers=3.0,addr=kentfs.kent.edu"
+      device: "//kentfs.kent.edu/science/Labs/clementslab/IMAGEJ_SERVER/"
+
+services:
+  ray:
+    container_name: ray-container
+    image: masonbair/imagej-app:ray
+    ports:
+      - 8265:8265
+    mem_limit: 120g
+    cpus: 0.000
+    volumes:
+      - image-network:/IMAGEJ_SERVER:/var/www/html/flask/static/biology-share
+    restart: always
+  apache:
+    container_name: pyimagej-container
+    image: masonbair/imagej-app:flask
+    ports:
+      - 80:80
+    volumes:
+      - image-network:/IMAGEJ_SERVER:/var/www/html/flask/static/biology-share
+    restart: always
+
+
+'''
+volumes:
+  biology-share:
+  
+services:
+  ray:
+    container_name: ray-container
+    image: masonbair/imagej-app:ray
+    ports:
+      - 8265:8265
+    mem_limit: 120g
+    cpus: 0.000
+    volumes:
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share
+        target: /var/www/html/flask/static/biology-share
+    restart: always
+  apache:
+    container_name: apache-wsgi-container
+    image: masonbair/imagej-app:apache-wsgi
+    ports:
+      - 80:80
+    volumes:
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share
+        target: /var/www/html/flask/static/biology-share
+    restart: always
+    '''

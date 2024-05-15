@@ -1,0 +1,3 @@
+[console_scripts]
+imagej = imagej.imagej:imagej_main
+
