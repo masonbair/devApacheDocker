@@ -64,6 +64,12 @@ class MacroManager:
                 entrypoint=f'python macros3d.py {pFolder} {pId} {pOffsetX} {pOffsetY}',
                 submission_id = pId
             )
+        elif(macroName == "Primes"):
+            job_id = client.submit_job(
+                # Entrypoint shell command to execute
+                entrypoint=f'python primes.py',
+                submission_id = pId
+            )
 
 
     def addMacroToList(self, pMacro):
