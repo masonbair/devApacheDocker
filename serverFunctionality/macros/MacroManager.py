@@ -45,7 +45,7 @@ class MacroManager:
         pass
 
     def runMacro(self, pId, macroName, pFolder, pOffsetX = 0, pOffsetY = 0):
-        client = JobSubmissionClient("http://ray-container:8265")
+        client = JobSubmissionClient("http://localhost:8265")
         status_to_wait_for = {JobStatus.SUCCEEDED, JobStatus.STOPPED, JobStatus.FAILED}
         #its important to set the working directory for ray since the ray start head command might not be in the same folder as the script files
         working_dir = '/var/www/html/flask/static'

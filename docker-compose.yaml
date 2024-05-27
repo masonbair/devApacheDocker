@@ -10,7 +10,7 @@ volumes:
 services:
   ray:
     container_name: ray-container
-    image: ray-dev:0.2
+    image: masonbair/imagej-app:ray
     ports:
       - 8265:8265
     mem_limit: 120g
@@ -20,12 +20,17 @@ services:
     restart: always
   apache:
     container_name: pyimagej-container
-    image: apache-dev:0.2
+    image: dev:0.1
     ports:
       - 80:80
     volumes:
       - image-network:/IMAGEJ_SERVER:/var/www/html/flask/static/biology-share
     restart: always
+  xpra:
+    container_name: xpra-container
+    image: xpra:0.1
+    ports:
+      - 10000:10000
 
 
 #volumes:

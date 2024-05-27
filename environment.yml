@@ -2,12 +2,13 @@ name: pyimagej
 channels:
   - conda-forge
 dependencies:
-  - python=3.11.6
-  - ray-default=2.8.1
-  - ray-core=2.8.1
+  - python=3.11
+  - openjdk=8
+  - "ray-default"
   - flask
   - flask-cors
   - async-timeout
+  - nodejs
   - pip:
     - ij==0.0.4
     - mod-wsgi==5.0.0

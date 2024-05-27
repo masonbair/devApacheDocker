@@ -1,8 +1,9 @@
 from macros.MacroManager import MacroManager
-#from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
+import requests
 import file_manager
 import datetime
 import random
@@ -10,6 +11,10 @@ import time
 
 
 app = Flask(__name__)
+
+#CORS(app)   #cors if for hosting the flask server and angular in the same computer
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+#CORS(app, origins='http://localhost')
 
 manager = file_manager.FileMaganer()
 MacroManager = MacroManager()
@@ -82,6 +87,15 @@ def returnjobIdStatus():
     result = MacroManager.getJobIdStatus(jobId)
     doneFolder = MacroManager.getDoneMacroData(jobId)
     return jsonify({"message": [jobId, result, doneFolder]})
+
+@app.route('/xpraStation/', methods=['POST', 'GET'])
+@cross_origin()
+def xpraStation():
+    print("xpraStation")
+    internal_url = 'http://localhost/xpra/'
+    # Forward the request with same method and data
+    return redirect(internal_url)
+
 
 @app.route('/', methods=['POST','GET'])
 #@cross_origin()
