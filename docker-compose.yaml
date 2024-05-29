@@ -28,7 +28,7 @@ services:
     restart: always
   xpra:
     container_name: xpra-container
-    image: xpra:0.1
+    image: xpra-min:0.2
     ports:
       - 10000:10000
 
