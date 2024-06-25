@@ -2,26 +2,34 @@ from macros.MacroManager import MacroManager
 from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template
+from werkzeug.utils import secure_filename
 import requests
 import file_manager
 import datetime
 import random
 import time
+import os
 
 
 app = Flask(__name__)
-
+#app.config['SECRET_KEY'] = 'you will never guess the secret key'
+#app.config['CORS_HEADERS'] = 'Content-Type'
 #CORS(app)   #cors if for hosting the flask server and angular in the same computer
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
-#CORS(app, origins='http://localhost')
+#cors = CORS(app, resources={r"/*": {"origins": "*"}})
+#CORS(app, origins='http://bda.as.kent.edu')
 
 manager = file_manager.FileMaganer()
 MacroManager = MacroManager()
+directory = '/var/www/html/flask/static'
+webAddress = 'http://bda.as.kent.edu'
+
+ALLOWED_EXTENSIONS = {'jar'}
+app.config['UPLOAD_FOLDER'] = directory+'/Fiji.app/plugins'
 
 
 def findDirectories():
-    directories = manager.loadDirectories('/var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Pending/')
+    directories = manager.loadDirectories(directory+"/biology-share/IMAGEJ_SERVER/Pending/")
     return(directories)
 
 def runMacro(macroName, pFolders, pOffsetX, pOffsetY):
@@ -40,6 +48,10 @@ def macroqueue():
         data = request.get_json()
         folders = data["folders"]
         jobsList = []
+        if data["name"] == "imagej":
+            rNumber = datetime.datetime.now()
+            jobId = int(str(int(rNumber.strftime('%Y%m%d%H%M%S'))) + str(random.randint(1000000000, 5000000000)))
+            MacroManager.addMacroToList([str(jobId), data["name"], "/", 1, 1,''])
         for folder in folders:
             rNumber = datetime.datetime.now()
             jobId = int(str(int(rNumber.strftime('%Y%m%d%H%M%S'))) + str(random.randint(1000000000, 5000000000)))
@@ -88,13 +100,35 @@ def returnjobIdStatus():
     doneFolder = MacroManager.getDoneMacroData(jobId)
     return jsonify({"message": [jobId, result, doneFolder]})
 
-@app.route('/xpraStation/', methods=['POST', 'GET'])
+@app.route('/xpraStation/', methods=['GET'])
 @cross_origin()
 def xpraStation():
     print("xpraStation")
-    internal_url = 'http://localhost/xpra/'
+    internal_url = webAddress+'/xpra/'
     # Forward the request with same method and data
     return redirect(internal_url)
+
+# This method deals with the uploading of files, and makes sure only the request file type of .jar is uploaded:
+#Checks the file extension to make sure it is of type jar
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload/', methods=["POST"])
+def upload_file():
+    #Error handling
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    #Error handling
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return jsonify({'success': 'File uploaded successfully'}), 200
+    else:
+        #Error handling
+        return jsonify({'error': 'File type not allowed'}), 400
 
 
 @app.route('/', methods=['POST','GET'])

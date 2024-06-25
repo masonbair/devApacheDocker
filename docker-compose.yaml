@@ -1,71 +1,64 @@
 version: "3.8"
 
 volumes:
-  image-network:
-    driver_opts:
-      type: "cifs"
-      o: "username=mbair7@kent.edu,password=nix4*4KcYK*8qqP,vers=3.0,addr=kentfs.kent.edu"
-      device: "//kentfs.kent.edu/science/Labs/clementslab/IMAGEJ_SERVER/"
-
+  biology-share:
+  fiji-app:
+  
 services:
-  ray:
-    container_name: ray-container
-    image: masonbair/imagej-app:ray
-    ports:
-      - 8265:8265
-    mem_limit: 120g
-    cpus: 0.000
-    volumes:
-      - image-network:/IMAGEJ_SERVER:/var/www/html/flask/static/biology-share
-    restart: always
   apache:
-    container_name: pyimagej-container
-    image: dev:0.1
+    container_name: apache-wsgi-container
+    image: masonbair/imagej-app:apache-wsgi
     ports:
       - 80:80
+    #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
+    # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
     volumes:
-      - image-network:/IMAGEJ_SERVER:/var/www/html/flask/static/biology-share
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+
+      - type: volume
+        source: fiji-app
+        target: /home/mbair7/necessary/Fiji.app
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/necessary/Fiji.app
+        target: /var/www/html/flask/static/Fiji.app
     restart: always
-  xpra:
-    container_name: xpra-container
-    image: xpra-min:0.2
+  ray:
+    container_name: ray-container
+    image: masonbair/imagej-app:xpra-ray
     ports:
+      - 8265:8265
       - 10000:10000
+    mem_limit: 120g
+    cpus: 0.000
+    #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
+    # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
+    volumes:
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
+        target: /ray-docker/Macro-Results
 
-
-#volumes:
-#  biology-share:
-  
-#services:
-#  ray:
-#    container_name: ray-container
-#    image: masonbair/imagej-app:ray
-#    ports:
-#      - 8265:8265
-#    mem_limit: 120g
-#    cpus: 0.000
-#    volumes:
-#      - type: volume
-#        source: biology-share
-#        target: /var/www/html/flask/static/biology-share
-#        volume:
-#          nocopy: true
-#      - type: bind
-#        source: /var/www/html/flask/static/biology-share
-#        target: /var/www/html/flask/static/biology-share
-#    restart: always
-#  apache:
-#    container_name: apache-wsgi-container
-#    image: masonbair/imagej-app:apache-wsgi
-#    ports:
-#      - 80:80
-#    volumes:
-#      - type: volume
-#        source: biology-share
-#        target: /var/www/html/flask/static/biology-share
-#        volume:
-#          nocopy: true
-#      - type: bind
-#        source: /var/www/html/flask/static/biology-share
-#        target: /var/www/html/flask/static/biology-share
-#    restart: always
+      - type: volume
+        source: fiji-app
+        target: /home/mbair7/necessary/Fiji.app
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/necessary/Fiji.app
+        target: /ray-docker/Fiji-app
+    environment:
+      - DISPLAY=:80
+    restart: always
