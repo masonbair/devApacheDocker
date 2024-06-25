@@ -1,0 +1,12 @@
+<input type="file" class="file-input"
+       (change)="onFileSelected($event)" #fileUpload multiple>
+
+<div class="file-upload">
+
+   {{fileName || "ImageJ Plugin loader"}}
+
+    <button mat-mini-fab color="primary" class="upload-btn btn btn-primary"
+      (click)="fileUpload.click()"> 
+        Upload .jar File
+    </button>
+</div>

@@ -1,0 +1,27 @@
+<div *ngIf="!(folders | async) ">
+    <h1>Waiting</h1>
+</div>
+
+<div class="container jumbotron">
+    <form class="row g-3">
+        <div *ngFor="let folder of folders | async">
+            <div class="list-group">
+                <label class="list-group-item">                    
+                    <input class="form-check-input me-1" type="checkbox" [value]="folder" (change)="onCheckboxChange(folder['Id'])" />
+                    {{ folder['File']}}
+                </label>
+            </div>    
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Offset X</label>
+            <input type="number" class="form-control" name="offsety" [(ngModel)]="offSetX">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Offset Y</label>
+            <input type="number" class="form-control" name="offsety" [(ngModel)]="offSetY">
+        </div>        
+        <div class="col-12">
+            <button type="button" (click)="callMacro()" class="btn btn-primary">Run macro</button>
+        </div>
+    </form>    
+</div>

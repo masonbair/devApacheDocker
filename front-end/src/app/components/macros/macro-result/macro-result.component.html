@@ -1,0 +1,11 @@
+<div *ngIf="jobIds | async">
+  <div class="container jumbotron" style="margin: 25px;">    
+    <div class="animated fadeIn">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div *ngFor="let job of jobIds | async" >
+          <app-macrojob [waitingMacroId]="job"></app-macrojob>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

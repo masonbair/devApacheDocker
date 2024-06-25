@@ -1,0 +1,154 @@
+/* You can add global styles to this file, and also import other style files */
+/* CSS HEX */
+--olivine: #b5ca8dff;
+--english-violet: #6b4e71ff;
+--air-superiority-blue: #7ca5b8ff;
+--bittersweet: #f9564fff;
+--pink-lavender: #e0bad7ff;
+
+/* CSS HSL */
+--olivine: hsla(81, 37%, 67%, 1);
+--english-violet: hsla(290, 18%, 37%, 1);
+--air-superiority-blue: hsla(199, 30%, 60%, 1);
+--bittersweet: hsla(2, 93%, 64%, 1);
+--pink-lavender: hsla(314, 38%, 80%, 1);
+
+/* SCSS HEX */
+$olivine: #b5ca8dff;
+$english-violet: #6b4e71ff;
+$air-superiority-blue: #7ca5b8ff;
+$bittersweet: #f9564fff;
+$pink-lavender: #e0bad7ff;
+
+/* SCSS HSL */
+$olivine: hsla(81, 37%, 67%, 1);
+$english-violet: hsla(290, 18%, 37%, 1);
+$air-superiority-blue: hsla(199, 30%, 60%, 1);
+$bittersweet: hsla(2, 93%, 64%, 1);
+$pink-lavender: hsla(314, 38%, 80%, 1);
+
+/* SCSS RGB */
+$olivine: rgba(181, 202, 141, 1);
+$english-violet: rgba(107, 78, 113, 1);
+$air-superiority-blue: rgba(124, 165, 184, 1);
+$bittersweet: rgba(249, 86, 79, 1);
+$pink-lavender: rgba(224, 186, 215, 1);
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(0deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-right: linear-gradient(90deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-bottom: linear-gradient(180deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-left: linear-gradient(270deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-top-right: linear-gradient(45deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-bottom-right: linear-gradient(135deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-top-left: linear-gradient(225deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-bottom-left: linear-gradient(315deg, #b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+$gradient-radial: radial-gradient(#b5ca8dff, #6b4e71ff, #7ca5b8ff, #f9564fff, #e0bad7ff);
+
+/* Basic CSS template */
+
+/* Body */
+body {
+    background-color: var(--olivine);
+    color: var(--english-violet);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--bittersweet);
+}
+
+/* Paragraph */
+p {
+    color: var(--air-superiority-blue);
+}
+
+/* Links */
+a {
+    color: var(--pink-lavender);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--bittersweet);
+}
+
+/* Buttons */
+button {
+    background-color: var(--bittersweet);
+    color: var(--english-violet);
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--pink-lavender);
+}
+
+/* Lists */
+ul, ol {
+    background-color: var(--air-superiority-blue);
+    color: var(--english-violet);
+}
+li {
+    margin: 5px 0;
+}
+
+/* Forms */
+input, textarea, select {
+    background-color: var(--olivine);
+    color: var(--english-violet);
+    border: 1px solid var(--english-violet);
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--bittersweet);
+}
+
+/* Tables */
+table {
+    background-color: var(--pink-lavender);
+    color: var(--english-violet);
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid var(--english-violet);
+    padding: 10px;
+}
+th {
+    background-color: var(--bittersweet);
+    color: var(--olivine);
+}
+
+/* Blockquote */
+blockquote {
+    background-color: var(--air-superiority-blue);
+    color: var(--english-violet);
+    border-left: 5px solid var(--bittersweet);
+    margin: 10px 0;
+    padding: 10px;
+}
+
+/* Code */
+code {
+    background-color: var(--olivine);
+    color: var(--bittersweet);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Horizontal rule */
+hr {
+    border: 1px solid var(--bittersweet);
+}
+
+/* Images */
+img {
+    border: 5px solid var(--pink-lavender);
+}
+
+/* Footer */
+footer {
+    background-color: var(--english-violet);
+    color: var(--olivine);
+    padding: 20px;
+    text-align: center;
+}
