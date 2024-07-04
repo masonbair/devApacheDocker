@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MacrosService } from 'src/app/services/flask/macros/macros.service';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+//import {MatInputModule} from '@angular/material/input';
+//import {MatSelectModule} from '@angular/material/select';
+//import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-imagejs',
   templateUrl: './image-gallery.component.html',
   styleUrls: ['./image-gallery.component.css']
-  imports: [FormsModule, MatFormFieldModule, MatSelectModule, MatInputModule],
+  //imports: [FormsModule, MatFormFieldModule, MatSelectModule, MatInputModule],
 })
 export class ImageGalleryComponent implements OnInit {
     filenames: string[] = [];
