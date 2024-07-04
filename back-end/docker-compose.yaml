@@ -12,7 +12,7 @@ services:
       - 80:80
     #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
     # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
-    volumes:
+    volumes: ## Volume to access the images by the front end
       - type: volume
         source: biology-share
         target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
@@ -21,8 +21,7 @@ services:
       - type: bind
         source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
         target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
-
-      - type: volume
+      - type: volume ## Volume for ImageJ
         source: fiji-app
         target: /home/mbair7/necessary/Fiji.app
         volume:
@@ -30,6 +29,14 @@ services:
       - type: bind
         source: /home/mbair7/necessary/Fiji.app
         target: /var/www/html/flask/static/Fiji.app
+      - type: volume ##Volume for the image gallery
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
+        volume: 
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results/
+        target: /var/www/html/flask/static/assets
     restart: always
   ray:
     container_name: ray-container
@@ -44,12 +51,21 @@ services:
     volumes:
       - type: volume
         source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+
+      - type: volume
+        source: biology-share
         target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
         volume:
           nocopy: true
       - type: bind
         source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
-        target: /ray-docker/Macro-Results
+        target: /static/assets
 
       - type: volume
         source: fiji-app

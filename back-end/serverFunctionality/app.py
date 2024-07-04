@@ -108,11 +108,11 @@ def xpraStation():
     # Forward the request with same method and data
     return redirect(internal_url)
 
-# This method deals with the uploading of files, and makes sure only the request file type of .jar is uploaded:
+# This 2 methods deals with the uploading of files, and makes sure only the request file type of .jar is uploaded:
 #Checks the file extension to make sure it is of type jar
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+#Continuation of uploading a .jar file plugin
 @app.route('/upload/', methods=["POST"])
 def upload_file():
     #Error handling
@@ -129,6 +129,16 @@ def upload_file():
     else:
         #Error handling
         return jsonify({'error': 'File type not allowed'}), 400
+
+##This will run the ImageJ plugin, with or without an image
+@app.route('/startImagej/', methods=["POST", "GET"])
+def runImageJ():
+    if request.method == 'POST':
+        data = request.get_json()
+        imageName = data['image']
+        MacroManager.runImageJ(imageName)
+        return jsonify({"images": imageName})
+    return jsonify({"Unable to open image"})
 
 
 @app.route('/', methods=['POST','GET'])

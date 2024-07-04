@@ -1,14 +1,9 @@
 <h2>Misc.</h2>
 <hr>
 <ul class="list-group">
-    <li class="list-group-item"
-        (click)="updateMacro('imagej'); callMacro()">
-        Load Imagej
-    </li>
-    
     <li 
         class="list-group-item"
-        (click)="updateToXpra()">
-        Virtual Display
+        (click)="updateToXpra();updateMacro('imagej'); callMacro()">
+        Virtual Display 1
     </li>
 </ul>

@@ -1,0 +1,7 @@
+.selected{
+    border: 5px solid #fa4242;
+}
+
+.default{
+    border: 0px;
+}

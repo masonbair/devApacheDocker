@@ -68,9 +68,26 @@ class MacroManager:
             print("Running ImageJ in Xpra")
             job_id = client.submit_job(
                 # Entrypoint shell command to execute
-                entrypoint=f'python openImagej.py',
+                entrypoint=f'python openImagej.py null',
                 submission_id = pId
             )
+
+    def runImageJ(self, imageName):
+        client = JobSubmissionClient("http://ray-container:8265")
+        working_dir = '/var/www/html/flask/static'
+        print("Running ImageJ in Xpra")
+        if( imageName == "null"):
+            job_id = client.submit_job(
+                # Entrypoint shell command to execute
+                entrypoint=f'python openImagej.py {imageName}'
+            )
+        else:
+            job_id = client.submit_job(
+            # Entrypoint shell command to execute
+                entrypoint=f'python openImagej.py {imageName}'
+            )
+
+        
 
 
     def addMacroToList(self, pMacro):

@@ -56,7 +56,7 @@ export class FilePickerComponent implements OnInit {
       this.checkedFolders.push(e);
    }
    else{
-      this.checkedFolders.splice(index, 1);
+      this.checkedFolders.slice(index, 1);
    }
   }
 

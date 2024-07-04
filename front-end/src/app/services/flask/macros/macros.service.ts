@@ -135,18 +135,18 @@ export class MacrosService {
   //This works with XPRA to send the user to the xpra main page
   async getXpraServer(){
     window.open(`${this.serverAddress}/xpra/`, '_blank');
-    /*
-    let promise = new Promise((resolve, reject) => {
-      this.http.get(`${this.serverAddress}/xpraStation/`)
-        .subscribe( { next: (resp:any) =>{
-          resolve("HEllo");
-          console.log("Resolved");
-      }, error:(err:any) =>{
-          reject(err);
+  }
+
+  async getImagejOpen(image:string){
+    const upload$ = this.http.post(`${this.serverAddress}/startImagej/`, {"image":image});
+    upload$.subscribe(
+      response => {
+        console.log('Imagej opened successful:', response);
+      },
+      error => {
+        console.error('Imagej not opened: error:', error);
       }
-    })
-    });
-    return promise;*/
+    );
   }
 
   getServerAdress(){

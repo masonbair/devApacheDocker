@@ -1,0 +1,27 @@
+<div class="row container mt-4" style="height: fit-content;">
+  <div class="col-2">
+    <mat-select>
+      
+    </mat-select>
+    
+  </div>
+
+  <div class="col">
+    <h2 class="text-center">Select an Image for analysis</h2>
+    <br/>
+    <div class="container">
+      <div class="row">
+        <div class="col"><h5>Currently selected images are: <h5 *ngFor="let index of selected_index">{{filenames[index]}},</h5></h5></div>
+        <button class="col btn btn-primary" (click)="loadImagej(filenames[selected_index[0]]);updateToXpra();">Open ImageJ</button>
+      </div>
+      
+    </div>
+
+    <div class="row">
+      <div class="col-md-4" *ngFor="let image of filenames; let i = index">
+          <img [src]="image" alt="Image" class="img-thumbnail" [ngClass]="selected_index.indexOf(i) != -1 ? ['selected'] : ['default']" (click)="currentSelectedImage(i)">
+          <p class="text-primary">{{image.substring(0, image.length-4)}}</p>
+      </div>
+    </div>
+  </div>
+</div>

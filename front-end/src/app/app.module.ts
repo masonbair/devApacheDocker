@@ -18,6 +18,7 @@ import { MacroResultComponent } from './components/macros/macro-result/macro-res
 import { MacroListComponent } from './components/macro-list/macro-list.component';
 import { MacroHomeComponent } from './components/macro-home/macro-home.component';
 import { MiscButtonsComponent } from './components/misc-buttons/misc-buttons.component';
+import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 
 //services
 import { SharedMacroService } from 'src/app/services/macros/shared-macro.service';
@@ -37,6 +38,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     MacrojobComponent,
     MiscButtonsComponent,
     FileUploadComponent,
+    ImageGalleryComponent,
     
   ],
   imports: [
