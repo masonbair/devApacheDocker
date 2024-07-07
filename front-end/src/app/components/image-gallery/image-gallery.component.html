@@ -1,25 +1,37 @@
-<div class="row container mt-4" style="height: fit-content;">
-  <div class="col-2">
-    
-    
+<br />
+<h2 class="text-center">Select an Image for analysis</h2>
+<br />
+<div>
+  <div class="container flex-row">
+    <div class="row">
+      <div class="col-sm">
+        <form>
+          <mat-form-field>
+            <br/>
+            <mat-label>File Type:</mat-label>
+            <select matNativeControl required (change)="selectType($event); loadPage()">
+              <option *ngFor="let ftype of fileTypes" [value]="ftype.value">{{ftype.viewValue}}</option>
+            </select>
+          </mat-form-field>
+          
+        </form>
+      </div>
+      <div class="col-sm"></div>
+      <div class="col-md-4 text-center">
+        <div><h5>Currently have {{selected_index.length}} images selected</h5></div>
+      </div>
+      <div class="col-sm"></div>
+      <div class="col-sm">
+        <button class="btn btn-primary" [disabled]="fileExists" (click)="loadImagej(filenames, selected_index);updateToXpra();" (change)="loadPage();">Open ImageJ</button>
+        <div *ngIf="fileExists" class="text-danger">Please close out of any imageJ active sessions</div>
+      </div>
+    </div>
   </div>
 
-  <div class="col">
-    <h2 class="text-center">Select an Image for analysis</h2>
-    <br/>
-    <div class="container">
-      <div class="row">
-        <div class="col"><h5>Currently selected images are: <h5 *ngFor="let index of selected_index">{{filenames[index]}},</h5></h5></div>
-        <button class="col btn btn-primary" (click)="loadImagej(filenames[selected_index[0]]);updateToXpra();">Open ImageJ</button>
-      </div>
-      
-    </div>
-
-    <div class="row">
-      <div class="col-md-4" *ngFor="let image of filenames; let i = index">
-          <img [src]="image" alt="Image" class="img-thumbnail" [ngClass]="selected_index.indexOf(i) != -1 ? ['selected'] : ['default']" (click)="currentSelectedImage(i)">
-          <p class="text-primary">{{image.substring(0, image.length-4)}}</p>
-      </div>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let image of filenames; let i = index">
+        <img [src]="image" alt="Image" class="img-thumbnail" [ngClass]="selected_index.indexOf(i) != -1 ? ['selected'] : ['default']" (click)="currentSelectedImage(i)">
+        <p class="text-primary">{{image.substring(15, image.length)}}</p>
     </div>
   </div>
 </div>

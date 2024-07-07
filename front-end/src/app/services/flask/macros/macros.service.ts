@@ -137,8 +137,8 @@ export class MacrosService {
     window.open(`${this.serverAddress}/xpra/`, '_blank');
   }
 
-  async getImagejOpen(image:string){
-    const upload$ = this.http.post(`${this.serverAddress}/startImagej/`, {"image":image});
+  async getImagejOpen(images:string[]){
+    const upload$ = this.http.post(`${this.serverAddress}/startImagej/`, {"images":images});
     upload$.subscribe(
       response => {
         console.log('Imagej opened successful:', response);

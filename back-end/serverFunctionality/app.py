@@ -100,6 +100,9 @@ def returnjobIdStatus():
     doneFolder = MacroManager.getDoneMacroData(jobId)
     return jsonify({"message": [jobId, result, doneFolder]})
 
+#Send you to xpra
+#Need to figure out a way to send you to the correct port number
+#It currenly sends you to port 80, but it needs to send you to port 10000
 @app.route('/xpraStation/', methods=['GET'])
 @cross_origin()
 def xpraStation():
@@ -135,20 +138,30 @@ def upload_file():
 def runImageJ():
     if request.method == 'POST':
         data = request.get_json()
-        imageName = data['image']
-        MacroManager.runImageJ(imageName)
-        return jsonify({"images": imageName})
+        imageNames = data['images']
+        passedNames = ""
+        for name in imageNames:
+            passedNames = passedNames + " " + name
+        MacroManager.runImageJ(passedNames)
+        return jsonify({"images": imageNames})
     return jsonify({"Unable to open image"})
+
+@app.route('/fileExists/', methods=["POST"])
+def fileExists():
+    if request.method == "POST":
+        data = request.get_json()
+        url = data['url']
+        exists = os.path.isfile(url)
+        print(exists)
+        return jsonify({"exists": exists})
+    return jsonify({"Error"})
 
 
 @app.route('/', methods=['POST','GET'])
 #@cross_origin()
 def root():
     return render_template('index.html')
-   # response = jsonify({"message": 'This is the home page of the flask server'})
-    #response.headers.add('Access-Control-Allow-Origin', '*')
-    #return response
-    #return jsonify({"message": 'This is the home page of the flask server'})
+  
 
 if __name__ == "__main__":
     app.run(port=5000,debug=True)

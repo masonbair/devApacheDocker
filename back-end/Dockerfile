@@ -23,6 +23,7 @@ ENV CONDA_DEFAULT_ENV $(head -1 environment.yml | cut -d' ' -f2)
 COPY ./start_apache.sh .
 COPY ./configurations/ /etc/apache2/
 COPY ./serverFunctionality/ /var/www/html/flask/
+COPY ./serverFunctionality/static/assets/img/fiji-logo.svg /var/www/html/flask/static/fiji-logo/
 
 
 # Expose port 80

@@ -13,6 +13,9 @@ export class FolderService {
 
   foldersList:FolderClass[] = [];
   private serverAddress = this._ServerService.getServerAddress();
+  public exists = Boolean();
+  
+
 
   getFolder(index:number)
   {
@@ -20,6 +23,23 @@ export class FolderService {
 
   }
 
+  fileExists(url: string) {
+    this.http.post(`${this.serverAddress}/fileExists/`, {"url":url})
+      .subscribe( { next: (resp:any) =>{
+        this.exists = Boolean(resp['exists']);
+        if(this.exists){
+          console.log('File exists: ', this.exists);
+        }else{
+          console.error('File does not exist: ', this.exists);
+        }
+      }, error:(err:any) =>{
+        console.error('Error: File does not exist: ', err);
+        this.exists = false;
+      }
+    });
+    return this.exists;
+  }
+  
   
   callFolders()
   {
@@ -64,4 +84,5 @@ export class FolderClass{
 	  const parts = fullDirect.split('/');
 	  return parts[parts.length - 2];
   }
+
 }

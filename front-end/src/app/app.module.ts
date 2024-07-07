@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import  { HttpClientModule} from '@angular/common/http'; //very important for http requests
 import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 //Routes
 import { APP_ROUTING } from './app.routes';
@@ -39,13 +42,15 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     MiscButtonsComponent,
     FileUploadComponent,
     ImageGalleryComponent,
-    
   ],
   imports: [
     //third party imports first
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatInputModule,
     //my imports second
     APP_ROUTING,
     AppRoutingModule
