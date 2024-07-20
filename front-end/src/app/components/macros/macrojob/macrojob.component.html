@@ -9,11 +9,10 @@
         </div>  
         <div class="card-body">
             <h5 class="card-title">Macro is loading</h5>
-            <p class="card-text">More things.</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Folder of origin:</li>
             <li class="list-group-item">{{waitingMacroId[2]}}</li>
+            <button class="list-group-item btn btn-primary" (click)="updateToXpra()">View Image Processing</button>
             <div *ngIf="(queuePos | async) == 0 else elseBlock" >
                 <li class="list-group-item">Position in queue:<br> in execution</li>
             </div>
@@ -32,10 +31,8 @@
             <img src={{jobData.Image}} class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">Macro is ready</h5>
-                <p class="card-text">More things.</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Folder of origin:</li>
                 <li class="list-group-item">{{waitingMacroId[2]}}</li>                    
             </ul>
             <div class="card-footer">

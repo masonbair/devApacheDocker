@@ -32,6 +32,11 @@ export class MacrojobComponent implements OnInit {
       console.log(this.jobData);
     }
   }
+
+  updateToXpra(){
+    console.log("Sending to XPRA");
+    this._macroService.getXpraServer();
+  }
   
   constructor(private _macroService:MacrosService,
     private dom: DomSanitizer) {}
