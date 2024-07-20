@@ -1,14 +1,12 @@
 <h2>Macros</h2>
 <hr>
 <ul class="list-group">
-    <li class="list-group-item"
-        (click)="updateMacro('3D'); ">
+    <li class="list-group-item" [ngClass]=" MacroType == '3D' ? ['selected'] : ['default']" (click)="updateMacro('3D'); ">
         3D Macro
     </li>
 
-    <li routerLinkActive="active"
-        class="list-group-item"
-        (click)="updateMacro('2D')">
+    <li routerLinkActive="active" [ngClass]=" MacroType == '2D' ? ['selected'] : ['default']" class="list-group-item" (click)="updateMacro('2D')">
         2D Macro
     </li>
 </ul>
+

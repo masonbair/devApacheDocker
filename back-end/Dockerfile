@@ -1,21 +1,20 @@
-FROM continuumio/miniconda3
-
+FROM mambaorg/micromamba
 # Install Apache and mod_wsgi
-RUN apt-get update 
-RUN apt-get install -y apache2
-#RUN apt-get update 
-#RUN apt-get install -y libapache2-mod-wsgi-py3
-RUN apt-get update 
-RUN apt-get install -y libstdc++6
-#RUN apt-get update
-RUN apt install -y apache2-dev
+
+USER root
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apache2 libstdc++6 apache2-dev
 
 ENV BASH_ENV ~/.bashrc
 SHELL ["/bin/bash", "-c"]
 
 COPY ./environment.yml /home/env/
-RUN conda env create -f /home/env/environment.yml
-RUN echo "conda activate pyimagej" >> ~/.bashrc
+RUN micromamba create -y -f /home/env/environment.yml
+RUN micromamba clean --dry-run --all \
+    && find /opt/conda/ -follow -type f -name '*.a' -delete \
+    && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
+    && find /opt/conda/ -follow -type f -name '*.js.map' -delete 
+
+RUN echo "micromamba activate pyimagej" >> ~/.bashrc
 ENV PATH /opt/conda/envs/pyimagej/bin/python3:$PATH
 
 ENV CONDA_DEFAULT_ENV $(head -1 environment.yml | cut -d' ' -f2)
@@ -28,6 +27,7 @@ COPY ./serverFunctionality/static/assets/img/fiji-logo.svg /var/www/html/flask/s
 
 # Expose port 80
 EXPOSE 80
+ENV WEBADDRESS bda.as.kent.edu
 
 # Start Apache when the container starts
 CMD ["./start_apache.sh"]

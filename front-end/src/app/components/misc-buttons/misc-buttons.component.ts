@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SharedMacroService} from '../../services/macros/shared-macro.service';
 import { Router } from '@angular/router';
 import { MacrosService } from 'src/app/services/flask/macros/macros.service';
+import { MacroListComponent } from '../macro-list/macro-list.component';
 
 @Component({
   selector: 'app-misc-buttons',
@@ -12,28 +13,20 @@ export class MiscButtonsComponent implements OnInit {
 
 
   constructor(private _SharedMacroService:SharedMacroService, private _macrosService: MacrosService) {  }
-  offSetX = 0;
-  offSetY = 0;
   macro = this._SharedMacroService.getMacroName();
   
   isActive: number = 1;
+  MacroType: string = "";
 
-  updateMacro(data:string)
+  updateImagej()
   {
-    //This sends the name of the selected element to a new class to display it on the screem
-    this._SharedMacroService.sendMacroNameUpdate(data);
+    var temp = ["null"];
+    this._macrosService.getImagejOpen(temp);
   }
 
   updateToXpra(){
     console.log("Sending to XPRA");
     this._macrosService.getXpraServer();
-  }
-
-  async callMacro()
-  {
-    this.macro = this._SharedMacroService.getMacroName();
-
-    const t = await this._macrosService.sendMacroToQueue();
   }
 
   ngOnInit(): void {

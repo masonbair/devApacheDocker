@@ -1,6 +1,7 @@
 <br />
 <h2 class="text-center">Select an Image for analysis</h2>
 <br />
+<!-- This displays the top fucntionality in the image gallery page -->
 <div>
   <div class="container flex-row">
     <div class="row">
@@ -8,6 +9,7 @@
         <form>
           <mat-form-field>
             <br/>
+            <!-- Lists the currenly available file types -->
             <mat-label>File Type:</mat-label>
             <select matNativeControl required (change)="selectType($event); loadPage()">
               <option *ngFor="let ftype of fileTypes" [value]="ftype.value">{{ftype.viewValue}}</option>
@@ -18,16 +20,19 @@
       </div>
       <div class="col-sm"></div>
       <div class="col-md-4 text-center">
+        <!-- This tells you how many images are currently selected -->
         <div><h5>Currently have {{selected_index.length}} images selected</h5></div>
       </div>
       <div class="col-sm"></div>
       <div class="col-sm">
-        <button class="btn btn-primary" [disabled]="fileExists" (click)="loadImagej(filenames, selected_index);updateToXpra();" (change)="loadPage();">Open ImageJ</button>
-        <div *ngIf="fileExists" class="text-danger">Please close out of any imageJ active sessions</div>
+        <!-- This sends the selected images to xpra and imagej when the button is clicked -->
+        <button class="btn btn-primary" [disabled]="(fileExists$ | async) === true" (click)="loadImagej(filenames, selected_index);updateToXpra();" (change)="loadPage();">Open ImageJ</button>
+        <div *ngIf="(fileExists$ | async)" class="text-danger">Please close out of any imageJ active sessions</div>
       </div>
     </div>
   </div>
 
+  <!-- This is the display for all the images -->
   <div class="row">
     <div class="col-md-4" *ngFor="let image of filenames; let i = index">
         <img [src]="image" alt="Image" class="img-thumbnail" [ngClass]="selected_index.indexOf(i) != -1 ? ['selected'] : ['default']" (click)="currentSelectedImage(i)">

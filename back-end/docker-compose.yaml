@@ -50,6 +50,9 @@ services:
       - type: bind
         source: /home/mbair7/lock
         target: /lock
+    #networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.2
     restart: always
   ray:
     container_name: ray-container
@@ -71,13 +74,7 @@ services:
       - type: bind
         source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
         target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
-
       #Volume for opening up images when needed 
-      - type: volume
-        source: biology-share
-        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
-        volume:
-          nocopy: true
       - type: bind
         source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
         target: /static/assets
@@ -103,8 +100,17 @@ services:
       - type: bind
         source: /home/mbair7/lock
         target: /ray-docker/lock
-
-
     environment:
       - DISPLAY=:80
+    #networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.3
     restart: always
+
+networks:
+  docker0:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 131.123.182.0/23
+          #gateway: 131.123.182.1

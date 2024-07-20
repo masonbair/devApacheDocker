@@ -24,7 +24,7 @@ declare const $: any;
 
 
 export class MacroResultComponent implements OnInit {
-	serverAddress = "http://bda.as.kent.edu:5000/"
+	//serverAddress = "http://bda.as.kent.edu:5000/"
 	waitingMacro = true;
 	jobIds:any;
 	macroFolder = this._macroService.getMacroFolder();	

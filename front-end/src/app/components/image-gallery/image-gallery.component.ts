@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MacrosService } from 'src/app/services/flask/macros/macros.service';
 import { FolderService } from 'src/app/services/flask/folder-service/folder.service';
+import { Observable, interval, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 interface Type{
     value: string;
@@ -14,33 +16,50 @@ interface Type{
   templateUrl: 'image-gallery.component.html',
   styleUrls: ['image-gallery.component.css'],
 })
+
+//This classes main purpose is to be the Image Gallery on the webpage
 export class ImageGalleryComponent implements OnInit {
     filenames: string[] = [];
     selected: boolean = false;
     selected_index: number[] = [];
     loaded_images: string[] = [];
 
-    fileExists: Boolean = true;
+    //We use an Observable in this spot to use as a constant checker for if the imagej_lock file exists or not
+    // This helps make sure the button is always active based on if imageJ is already open or not
+    fileExists$: Observable<boolean> = new Observable();
+    private _pollingSubscription: Subscription = new Subscription();
 
     selectedType: string = "";
-    fileTypes: Type[] = [
-        {value: '.jpg', viewValue: 'JPG'},
-        {value: '.tif', viewValue: 'TIF'},
-        {value: '.oif', viewValue: 'OIF'}
-    ]
+    fileTypes: Type[] = [];
 
-    constructor(private _macrosService: MacrosService, private _folderServer: FolderService) { }
+    constructor(private _macrosService: MacrosService, public _folderServer: FolderService) { }
 
     ngOnInit(): void {
-        this.fileExists = this._folderServer.fileExists("/lock/imagej_lock.txt");
-        console.log(this.fileExists.valueOf());
+        this.checkFileExists();
         this.selectedType = ".jpg";
         this.readImages();
 
     }
 
+    ngOnDestroy() {
+        if (this._pollingSubscription) {
+          this._pollingSubscription.unsubscribe();
+        }
+      }
+
+    //Sets the observable for checking if the file exists
+    checkFileExists() {
+        this.fileExists$ = interval(5000).pipe(
+            switchMap(() => this._folderServer.fileExists('/lock/imagej_lock.txt'))
+          );
+          this._pollingSubscription = this.fileExists$.subscribe();
+    }
+
+    //This takes in a bunch of nonesense string data and parses out the image names held in the html 
     readImages(){
+        //This is the path of where the results images should be inside of the docker container
         const assetsPath = '/static/assets'; 
+
         var context = this;
         context = this;
         
@@ -89,10 +108,11 @@ export class ImageGalleryComponent implements OnInit {
         .catch(error => console.error('Error loading images:', error));
     }
 
+    //This loads the page just to keep updated the images that are able to be processed
     loadPage(){
-        this.fileExists = this._folderServer.fileExists("/lock/imagej_lock.txt")
-        setTimeout(() => {},5000);
-        console.log(this.fileExists.valueOf());
+        //this.fileExists = this._folderServer.fileExists("/lock/imagej_lock.txt")
+        //setTimeout(() => {},5000);
+        //console.log(this.fileExists.valueOf());
         console.log("Loading Images");
         var filterType = this.selectedType;
         var filtered_images = [];
@@ -107,22 +127,28 @@ export class ImageGalleryComponent implements OnInit {
         this.filenames = final;
     }
 
+    //This sends a request to the macrosService with the images selected for when imageJ is opened
     loadImagej(images: string[], indexes: number[]){
         var selected_images = [];
-        if(images[0] == null){
+        //If no images are selected then a "null" keyword is passed
+        if(indexes.length == 0){
+            console.log("No images selected");
             selected_images.push("null");
         }else{
+            //If images are selected then they get added to an array to be sent to the macrosService
             for(var i = 0; i < indexes.length; ++i){
                 selected_images[i] = images[indexes[i]];
             }
         }
         this._macrosService.getImagejOpen(selected_images);
     }
+    //This is just a functiont o communicate with macrosService to open up xpra when the button is pressed
     updateToXpra(){
         console.log("Sending to XPRA");
         this._macrosService.getXpraServer();
       }
-
+    
+      //This helps keep track of what images are and are not selected
     currentSelectedImage(image_index: number){
         var index = this.selected_index.indexOf(image_index);
         if(index == -1){
@@ -132,6 +158,7 @@ export class ImageGalleryComponent implements OnInit {
         }
     }
 
+    //This keeps track of the type that is currently selected from the html drop down table
     selectType(event: Event) {
         this.selectedType = (event.target as HTMLSelectElement).value;
       }

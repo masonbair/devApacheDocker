@@ -13,16 +13,11 @@ import os
 
 
 app = Flask(__name__)
-#app.config['SECRET_KEY'] = 'you will never guess the secret key'
-#app.config['CORS_HEADERS'] = 'Content-Type'
-#CORS(app)   #cors if for hosting the flask server and angular in the same computer
-#cors = CORS(app, resources={r"/*": {"origins": "*"}})
-#CORS(app, origins='http://bda.as.kent.edu')
 
 manager = file_manager.FileMaganer()
 MacroManager = MacroManager()
 directory = '/var/www/html/flask/static'
-webAddress = 'http://bda.as.kent.edu'
+webAddress = os.environ["WEBADDRESS"]
 
 ALLOWED_EXTENSIONS = {'jar'}
 app.config['UPLOAD_FOLDER'] = directory+'/Fiji.app/plugins'
@@ -39,6 +34,12 @@ def runMacro(macroName, pFolders, pOffsetX, pOffsetY):
         resultList.append({"Name":folder["Name"],"Id":folder["Id"], "Image":result})
         resultList.append({"Name": folder["Name"], "Id": folder["Id"], "Image": result})
     return resultList
+
+#This flask route is specifically for sending the server address to Angular
+@app.route('/webAddress/', methods = ['GET'])
+def returnWebAddress():
+    return jsonify({"address": webAddress})
+
 
 #here we define the waiting function for loading the macro, both macro loading and macro are in charge oof showing the process loading
 @app.route('/addMacroToQueue/',methods = ['POST', 'GET'])
@@ -68,6 +69,7 @@ def returnDirectories():
     tempDirectories = findDirectories()
     return jsonify({"directories": tempDirectories})
 
+#Keeps track of the queue of jobs submitted to Ray
 @app.route('/jobqueuepos/', methods=['GET'])
 #@cross_origin()
 def returnJobQueue():
@@ -81,7 +83,7 @@ def returnJobQueue():
 @app.route('/macrosList/', methods=['GET'])
 #@cross_origin()
 def returnMacroList():
-    return jsonify({"directories": MacroManager.getMacroList()});
+    return jsonify({"directories": MacroManager.getMacroList()})
 
 @app.route('/macroStatus/', methods=['POST'])
 #@cross_origin()
@@ -89,7 +91,7 @@ def returnMacroStatus():
     data = request.get_json()
     jobsId = data["jobs"]
     result = MacroManager.getMacrosStatus(jobsId)
-    return jsonify({"message": result});
+    return jsonify({"message": result})
 
 @app.route('/jobIdStatus/', methods=['POST'])
 #@cross_origin()
@@ -142,6 +144,7 @@ def runImageJ():
         passedNames = ""
         for name in imageNames:
             passedNames = passedNames + " " + name
+        print("Names being passed to macro manager" + passedNames)
         MacroManager.runImageJ(passedNames)
         return jsonify({"images": imageNames})
     return jsonify({"Unable to open image"})
@@ -158,7 +161,6 @@ def fileExists():
 
 
 @app.route('/', methods=['POST','GET'])
-#@cross_origin()
 def root():
     return render_template('index.html')
   

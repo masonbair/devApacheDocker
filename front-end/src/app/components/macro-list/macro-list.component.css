@@ -1,3 +1,11 @@
 .active {
     background-color: grey;
 }
+
+.selected{
+    background-color: grey;
+}
+
+.default{
+    background-color: whitesmoke;
+}
