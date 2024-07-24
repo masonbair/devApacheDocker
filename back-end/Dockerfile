@@ -24,12 +24,9 @@ COPY ./configurations/ /etc/apache2/
 COPY ./serverFunctionality/ /var/www/html/flask/
 COPY ./serverFunctionality/static/assets/img/fiji-logo.svg /var/www/html/flask/static/fiji-logo/
 
-
 # Expose port 80
 EXPOSE 80
 ENV WEBADDRESS bda.as.kent.edu
 
 # Start Apache when the container starts
 CMD ["./start_apache.sh"]
-RUN a2ensite xpra-flask-apache.conf
-RUN a2dissite 000-default.conf
