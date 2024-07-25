@@ -1,5 +1,8 @@
 import os
 
+## This file is essentially just for working with the folders of the network drive.
+# Nothing really needs to be changed here unless big changes happen
+
 class FileMaganer:
 
     def __init__(self):

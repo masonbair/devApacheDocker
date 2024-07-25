@@ -5,6 +5,8 @@ import subprocess
 import os
 import time
 
+## macro made specifically for opening a single imageJ instance.
+
 class macro:
 
 	def __init__(self, args):

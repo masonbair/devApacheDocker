@@ -1,3 +1,9 @@
+####### THIS IS ANOTHER IMPORTANT FILE #############
+# This file is responisble for sneding requests to Ray for running macros.
+# The macro files: macros2d.py and macros3d.py: you do not have to worry too much about them
+# The only thing that might need to be changed is at the end of each macro, the images get saved to a specific folder
+# If in the future the folder gets changed, make sure to change the folder destination in each macro
+
 import datetime
 
 from ray.job_submission import JobSubmissionClient, JobStatus
@@ -9,6 +15,12 @@ class MacroManager:
     macrosDoneList = []
     macrosRunningJobsList = []
 
+    def __init__(self):
+        x = threading.Thread(target=self.backgroundThreadMacroRunner)
+        x.start()
+        y = threading.Thread(target=self.backgroundRayJobUpdater)
+        y.start()
+
     def backgroundRayJobUpdater(self):
         print("TestMainMacroManager")
         client = JobSubmissionClient("http://ray-container:8265")
@@ -19,6 +31,9 @@ class MacroManager:
                     self.macrosDoneList.append(job)
                     self.macrosRunningJobsList.remove(job)
             time.sleep(3)
+    
+    #This macro runs in the background and checks to see if a macro was added to the "self.macrosPendingList": if a macro
+    # was added, it will then run the macro by calling "self.runMacro()"
     def backgroundThreadMacroRunner(self):
         while(True):
             if(len(self.macrosPendingList) > 0):
@@ -29,21 +44,7 @@ class MacroManager:
                 self.macrosRunningJobsList.append(macroItem)
             time.sleep(3)
 
-
-    def __init__(self):
-        x = threading.Thread(target=self.backgroundThreadMacroRunner)
-        x.start()
-        y = threading.Thread(target=self.backgroundRayJobUpdater)
-        y.start()
-
-
-    #returns the status of a job
-    def checJob(self, jobId):
-        return jobId in self.doneList
-
-    def sendRayJobSubmission(self):
-        pass
-
+    ## This is the function for running the macros.
     def runMacro(self, pId, macroName, pFolder, pOffsetX = 0, pOffsetY = 0):
         client = JobSubmissionClient("http://ray-container:8265")
         status_to_wait_for = {JobStatus.SUCCEEDED, JobStatus.STOPPED, JobStatus.FAILED}
@@ -65,6 +66,8 @@ class MacroManager:
                 submission_id = pId
             )
 
+    #This is a simple function for calling the "openImagej.py" python script, and then starting an instance of ImageJ inside of XPRA
+    # This could definetly be simplified in the future
     def runImageJ(self, imageNames):
         client = JobSubmissionClient("http://ray-container:8265")
         working_dir = '/var/www/html/flask/static'
@@ -76,7 +79,12 @@ class MacroManager:
             
 
         
+    #returns the status of a job
+    def checJob(self, jobId):
+        return jobId in self.doneList
 
+    def sendRayJobSubmission(self):
+        pass
 
     def addMacroToList(self, pMacro):
             self.macrosPendingList.insert(0 ,pMacro)
