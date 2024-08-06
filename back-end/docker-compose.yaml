@@ -22,6 +22,9 @@ services:
       - type: bind
         source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
         target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results/
+        target: /var/www/html/flask/static/assets
       - type: volume ## Volume for ImageJ
         source: fiji-app
         target: /home/mbair7/necessary/Fiji.app
@@ -30,14 +33,6 @@ services:
       - type: bind
         source: /home/mbair7/necessary/Fiji.app
         target: /var/www/html/flask/static/Fiji.app
-      - type: volume ##Volume for the image gallery
-        source: biology-share
-        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
-        volume: 
-          nocopy: true
-      - type: bind
-        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results/
-        target: /var/www/html/flask/static/assets
 
       #Volume for the imageJ lock
       #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
@@ -50,9 +45,8 @@ services:
       - type: bind
         source: /home/mbair7/lock
         target: /lock
-    #networks:
-    #  docker0:
-    #    ipv4_address: 131.123.182.2
+    environment:
+      - WEBADDRESS=bda.as.kent.edu
     restart: always
   ray:
     container_name: ray-container
@@ -102,15 +96,21 @@ services:
         target: /ray-docker/lock
     environment:
       - DISPLAY=:80
-    #networks:
-    #  docker0:
-    #    ipv4_address: 131.123.182.3
+    
     restart: always
 
-networks:
-  docker0:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 131.123.182.0/23
-          #gateway: 131.123.182.1
+# networks:
+#   docker0:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 131.123.182.0/23
+#           #gateway: 131.123.182.1
+
+#networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.3
+
+  #networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.2
