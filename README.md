@@ -10,4 +10,4 @@ The Two containers for the application are used as follows:
   2. The second container is just XPRA and Ray. There is a possibility to split this container up into 2 new containers. One with XPRA and one with Ray, but when Ray runs a macro, it sets a display number, and XPRA needs to access that display number in order to work properly. So maybe look for a way to send a display number to another container for this to work.
 
 
-Currently working on automation within the server.
+Currently working on automation within the server. This will work by having scripts that automatically pull the new version of the program and build up containers.
