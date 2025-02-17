@@ -35,6 +35,15 @@ services:
         source: /home/mbair7/necessary/Fiji.app
         target: /var/www/html/flask/static/Fiji.app
 
+      - type: volume ## Volume for rquo5 TIE plugin
+        source: plugins
+        target: /home/mbair7/necessary/plugins
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/necessary/plugins
+        target: /var/www/html/flask/static/Fiji.app/plugins
+
       #Volume for the imageJ lock
       #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
       # cause the server to start taking up a lot of extra and unneccesary RAM usage
