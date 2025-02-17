@@ -6,7 +6,7 @@ volumes:
 services:
   apache:
     container_name: apache-wsgi-container
-    image: masonbair/imagej-app:apache-wsgi
+    image: masonbair/imagej-app:apache-wsgi-latest
     ports:
       - 80:80
     #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
@@ -57,7 +57,7 @@ services:
     restart: always
   ray:
     container_name: ray-container
-    image: masonbair/imagej-app:xpra-ray
+    image: masonbair/imagej-app:xpra-ray-latest
     ports:
       - 8265:8265
       - 10000:10000
