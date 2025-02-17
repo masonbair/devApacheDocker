@@ -1,0 +1,119 @@
+
+volumes:
+  biology-share:
+  fiji-app:
+  file-lock:
+  
+services:
+  apache:
+    container_name: apache-wsgi-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
+    # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
+    volumes: ## Volume to access the images by the front end
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results/
+        target: /var/www/html/flask/static/assets
+      - type: volume ## Volume for ImageJ
+        source: fiji-app
+        target: /home/mbair7/necessary/Fiji.app
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/necessary/Fiji.app
+        target: /var/www/html/flask/static/Fiji.app
+
+      #Volume for the imageJ lock
+      #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
+      # cause the server to start taking up a lot of extra and unneccesary RAM usage
+      - type: volume
+        source: file-lock
+        target: /home/mbair7/lock
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/lock
+        target: /lock
+    environment:
+      - WEBADDRESS=bda.as.kent.edu
+    restart: always
+  ray:
+    container_name: ray-container
+    build:
+      context: ../xpra-ray
+      dockerfile: Dockerfile
+    ports:
+      - 8265:8265
+      - 10000:10000
+    mem_limit: 300g
+    cpus: 0.000
+    #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
+    # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
+    volumes:
+    #Volume to save the images too
+      - type: volume
+        source: biology-share
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+        target: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER
+      #Volume for opening up images when needed 
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/IMAGEJ_SERVER/Results
+        target: /static/assets
+
+      #Volume for accessing the Fiji/Imagej instance
+      - type: volume
+        source: fiji-app
+        target: /home/mbair7/necessary/Fiji.app
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/necessary/Fiji.app
+        target: /ray-docker/Fiji-app
+      
+      #Volume for the imageJ lock
+      #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
+      # cause the server to start taking up a lot of extra and unneccesary RAM usage
+      - type: volume
+        source: file-lock
+        target: /home/mbair7/lock
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/lock
+        target: /ray-docker/lock
+    environment:
+      - DISPLAY=:80
+    
+    restart: always
+
+# networks:
+#   docker0:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 131.123.182.0/23
+#           #gateway: 131.123.182.1
+
+#networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.3
+
+  #networks:
+    #  docker0:
+    #    ipv4_address: 131.123.182.2
