@@ -3,6 +3,7 @@ volumes:
   biology-share:
   fiji-app:
   file-lock:
+  plugins:
   
 services:
   apache:
@@ -110,19 +111,3 @@ services:
       - DISPLAY=:80
     
     restart: always
-
-# networks:
-#   docker0:
-#     driver: bridge
-#     ipam:
-#       config:
-#         - subnet: 131.123.182.0/23
-#           #gateway: 131.123.182.1
-
-#networks:
-    #  docker0:
-    #    ipv4_address: 131.123.182.3
-
-  #networks:
-    #  docker0:
-    #    ipv4_address: 131.123.182.2
