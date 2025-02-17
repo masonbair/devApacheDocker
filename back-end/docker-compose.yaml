@@ -2,6 +2,7 @@ volumes:
   biology-share:
   fiji-app:
   file-lock:
+  plugins:
   
 services:
   apache:
