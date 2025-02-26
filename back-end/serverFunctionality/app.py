@@ -24,7 +24,7 @@ from macros.MacroManager import MacroManager
 from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 import requests
 import file_manager
@@ -56,6 +56,11 @@ def runMacro(macroName, pFolders, pOffsetX, pOffsetY):
         resultList.append({"Name":folder["Name"],"Id":folder["Id"], "Image":result})
         resultList.append({"Name": folder["Name"], "Id": folder["Id"], "Image": result})
     return resultList
+
+# This function is to help server a plugins folder
+@app.route('/dev/<path:filename>')
+def serve_plugin(filename):
+    return send_from_directory(os.path.join(directory, 'dev'), filename)
 
 #This flask route is specifically for sending the server address to Angular
 @app.route('/webAddress/', methods = ['GET'])
