@@ -3,6 +3,7 @@ volumes:
   fiji-app:
   file-lock:
   plugins:
+  dev:
   
 services:
   apache:
