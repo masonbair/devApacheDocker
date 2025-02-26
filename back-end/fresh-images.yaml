@@ -4,6 +4,7 @@ volumes:
   fiji-app:
   file-lock:
   plugins:
+  dev:
   
 services:
   apache:
@@ -44,6 +45,16 @@ services:
       - type: bind
         source: /home/mbair7/necessary/plugins
         target: /var/www/html/flask/static/plugins
+
+      
+      - type: volume ## Volume for the webserver folder
+        source: dev
+        target: /var/www/html/flask/static/biology-share/webserver
+        volume:
+          nocopy: true
+      - type: bind
+        source: /var/www/html/flask/static/biology-share/webserver
+        target: /var/www/html/flask/static/dev
 
       #Volume for the imageJ lock
       #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
