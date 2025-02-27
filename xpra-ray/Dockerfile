@@ -40,7 +40,7 @@ RUN apt-get update && \
     apt-get autoremove -y --purge && \
     rm -rf /var/lib/apt/lists/*
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends xpra-html5 python3-requests && \
+    apt-get install -y --no-install-recommends xpra-html5=16.1 python3-requests && \
     rm -rf /var/lib/apt/lists/*
 # COpies over the created conda environment
 COPY --from=Build /opt/conda/envs/pyimagej /opt/conda/envs/pyimagej
