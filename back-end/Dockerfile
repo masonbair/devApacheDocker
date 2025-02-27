@@ -33,7 +33,7 @@ COPY ./start_apache.sh .
 COPY ./configurations/ /etc/apache2/
 COPY ./serverFunctionality/ /var/www/html/flask/
 COPY ./serverFunctionality/static/assets/img/fiji-logo.svg /var/www/html/flask/static/fiji-logo/
-# RUN chmod +x ./start_apache.sh
+RUN chmod +x ./start_apache.sh
 # Expose port 80
 EXPOSE 80
 # Change this variable if the application is running on a different server
