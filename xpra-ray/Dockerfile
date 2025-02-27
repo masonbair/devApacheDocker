@@ -57,7 +57,7 @@ ENV XPRA_PASSWORD xpraPyimagej
 # copies over other files
 COPY xpra.txt /xpra.txt
 COPY ./start_ray.sh ./start_ray.sh
-
+RUN chmod +x ./start_ray.sh
 RUN touch /tmp/.X80-lock 
 
 #exposes 2 port numbers. One for Ray and the Other for XPRA.
