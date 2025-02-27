@@ -36,10 +36,6 @@ import os
 
 app = Flask(__name__)
 
-app.add_url_rule('/dev/<path:filename>',
-                endpoint='dev_files',
-                view_func=app.send_static_file)
-
 manager = file_manager.FileMaganer()
 MacroManager = MacroManager()
 directory = '/var/www/html/flask/static'
@@ -62,9 +58,9 @@ def runMacro(macroName, pFolders, pOffsetX, pOffsetY):
     return resultList
 
 # This function is to help server a plugins folder
-@app.route('/dev/')
+@app.route('/dev/<path:path>')
 def serve_dev():
-    return app.send_static_file('dev/')
+    return app.send_from_directory('/static/dev', path)
 
 #This flask route is specifically for sending the server address to Angular
 @app.route('/webAddress/', methods = ['GET'])
