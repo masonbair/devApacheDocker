@@ -63,7 +63,7 @@ def runMacro(macroName, pFolders, pOffsetX, pOffsetY):
 # This function is to help server a plugins folder
 @app.route('/dev/')
 def serve_dev():
-    return app.send_from_directory(os.path.join(directory, 'dev'), "")
+    return send_from_directory(os.path.join(directory, 'dev'), "")
 
 #This flask route is specifically for sending the server address to Angular
 @app.route('/webAddress/', methods = ['GET'])
