@@ -4,6 +4,7 @@ volumes:
   file-lock:
   plugins:
   dev:
+  ssl-cert:
   
 services:
   apache:
@@ -11,6 +12,7 @@ services:
     image: masonbair/imagej-app:apache-wsgi-latest
     ports:
       - 80:80
+      - 433:433
     #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
     # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
     volumes: ## Volume to access the images by the front end
@@ -52,6 +54,17 @@ services:
       - type: bind
         source: /var/www/html/flask/static/biology-share/webserver
         target: /var/www/html/flask/static/dev
+
+      
+      ##HTTPS cert volume
+      - type: volume
+        source: ssl-cert
+        target: /home/mbair7/cerificates
+        volume:
+          nocopy: true
+      - type: bind
+        source: /home/mbair7/cerificates
+        target: /etc/ssl/certs/site
 
       #Volume for the imageJ lock
       #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
