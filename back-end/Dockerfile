@@ -11,6 +11,10 @@ ENV BASH_ENV ~/.bashrc
 SHELL ["/bin/bash", "-c"]
 
 COPY ./environment.yml /home/env/
+
+# For https
+RUN apt-get install -y libssl-dev
+
 # Creates the conda environment with the requirements from the environment.yml file
 RUN micromamba create -y -f /home/env/environment.yml
 # Cleans conda, and removes unnecessary files. Helps make the image a smaller size

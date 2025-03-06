@@ -8,7 +8,7 @@ micromamba activate pyimagej
 # Install Apache SSL module (correct package for Debian)
 apt-get update
 # In Debian, SSL module comes with the main apache2 package
-apt-get install -y apache2-utils ssl-cert libssl-dev
+apt-get install -y apache2-utils ssl-cert
 
 if [ ! -f /etc/apache2/mods-available/ssl.load ]; then
   echo "LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so" > /etc/apache2/mods-available/ssl.load
