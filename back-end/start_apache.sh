@@ -59,8 +59,5 @@ else
   echo "Site 000-default is already disabled"
 fi
 
-chmod 644 /etc/ssl/cert/site/bda.as.kent.edu.crt
-chmod 600 /etc/ssl/cert/site/bda.as.kent.edu.key
-
 # Start apache in the foreground
 apachectl -D FOREGROUND
