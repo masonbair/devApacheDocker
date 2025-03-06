@@ -57,7 +57,7 @@ services:
       
       ##HTTPS cert volume
       - type: bind
-        source: /home/mbair7/cerificates/
+        source: /home/mbair7/certificates/
         target: /etc/ssl/certs/site
 
       #Volume for the imageJ lock
