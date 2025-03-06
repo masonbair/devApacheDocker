@@ -36,7 +36,7 @@ COPY ./serverFunctionality/static/assets/img/fiji-logo.svg /var/www/html/flask/s
 RUN chmod +x ./start_apache.sh
 # Expose port 80
 EXPOSE 80
-EXPOSE 433
+EXPOSE 443
 # Change this variable if the application is running on a different server
 ENV WEBADDRESS bda.as.kent.edu
 

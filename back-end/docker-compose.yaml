@@ -12,7 +12,7 @@ services:
     image: masonbair/imagej-app:apache-wsgi-latest
     ports:
       - 80:80
-      - 433:433
+      - 443:443
     #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
     # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
     volumes: ## Volume to access the images by the front end
@@ -56,7 +56,7 @@ services:
         target: /var/www/html/flask/static/dev
 
       ## LOGS
-      - /var/logs/container-logs:/var/log/apache2
+      - /var/log/container-logs:/var/log/apache2
       
       ##HTTPS cert volume
       - type: bind
