@@ -58,6 +58,11 @@ services:
         target: /var/www/html/flask/static/dev
 
       ##HTTPS cert volume
+      - type: volume
+        source: ssl-cert
+        target: /home/mbair7/certificates/
+        volume:
+          nocopy: true
       - type: bind
         source: /home/mbair7/certificates/
         target: /etc/ssl/certs/site

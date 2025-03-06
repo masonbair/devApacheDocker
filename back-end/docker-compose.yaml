@@ -4,6 +4,7 @@ volumes:
   file-lock:
   plugins:
   dev:
+  ssl-cert:
   
 services:
   apache:
@@ -56,6 +57,11 @@ services:
 
       
       ##HTTPS cert volume
+      - type: volume
+        source: ssl-cert
+        target: /home/mbair7/certificates/
+        volume:
+          nocopy: true
       - type: bind
         source: /home/mbair7/certificates/
         target: /etc/ssl/certs/site
