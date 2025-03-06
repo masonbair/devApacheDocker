@@ -15,6 +15,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:80
+      - 433:433
     #I do this with the volume because I was unable to have the container directly access the biology network shared drive.
     # This volume for the container access the network share folder path from inside the server. That way it doesnt have to connect directly.
     volumes: ## Volume to access the images by the front end
