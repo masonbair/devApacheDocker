@@ -55,6 +55,8 @@ services:
         source: /var/www/html/flask/static/biology-share/webserver
         target: /var/www/html/flask/static/dev
 
+      ## LOGS
+      - /var/logs/container-logs:/var/log/apache2
       
       ##HTTPS cert volume
       - type: bind
