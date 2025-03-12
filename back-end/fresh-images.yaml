@@ -116,6 +116,11 @@ services:
         source: /home/mbair7/necessary/Fiji.app
         target: /ray-docker/Fiji-app
       
+      #HTTPS Certs
+      - type: bind
+        source: /home/mbair7/certificates/
+        target: /etc/ssl/certs/site
+        
       #Volume for the imageJ lock
       #This is a work around for making sure only one ImageJ instance is open at a time. Else, it would
       # cause the server to start taking up a lot of extra and unneccesary RAM usage
