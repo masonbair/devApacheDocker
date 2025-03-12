@@ -44,9 +44,5 @@ EXPOSE 443
 # Change this variable if the application is running on a different server
 ENV WEBADDRESS bda.as.kent.edu
 
-# Inside the container
-RUN ln -sf /lib/x86_64-linux-gnu/libcrypto.so.3 /lib/x86_64-linux-gnu/libcrypto.so.3.3.0
-RUN ln -sf /lib/x86_64-linux-gnu/libssl.so.3 /lib/x86_64-linux-gnu/libssl.so.3.3.0
-
 # Start Apache when the container starts
 CMD ["./start_apache.sh"]

@@ -9,6 +9,7 @@ dependencies:
   - flask-cors
   - async-timeout
   - nodejs
+  - openssl=3.0
   - pip:
     - ij==0.0.4
     - mod-wsgi==5.0.0
