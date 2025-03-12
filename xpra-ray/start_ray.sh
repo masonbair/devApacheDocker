@@ -10,7 +10,7 @@ rm /tmp/.X80-lock
 # Sets the xpra password
 XPRA_PASSWORD=$XPRA_PASSWORD
 # starts xpra
-xpra start :80 --daemon=yes --open-files=off --file-transfer=off --clipboard=no 
+xpra start :80 --daemon=yes --open-files=off --file-transfer=off --clipboard=no --html=on --ssl=on --ssl-cert=/etc/ssl/certs/site/bda.as.kent.edu.crt --ssl-key=/etc/ssl/certs/site/bda.as.kent.edu.key
 #--encryption-keyfile=/xpra.txt
 
 # Starts ray 
