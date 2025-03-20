@@ -5,7 +5,7 @@ dependencies:
   - python=3.11
   - openjdk=8
   - "ray-default"
-  - pyimagej
+  - pyimagej=1.4.1
   - flask
   - flask-cors
   - async-timeout
