@@ -3,6 +3,8 @@ import scyjava
 import sys
 import os
 
+os.environ["JAVA_HOME"] ="/opt/conda/envs/pyimagej"
+
 class macro:
 
 	def __init__(self, args):
