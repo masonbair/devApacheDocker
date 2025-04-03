@@ -193,7 +193,7 @@ def fileExists():
 # Biology drive when doing to /webserver
 @app.route('/webserver')
 def new_page():
-    html_file_path = directory +"/biology-share/webserver/"
+    html_file_path = directory +"/dev/"
     html_file_name = "hello.html"
     for root, directories, files in os.walk(html_file_path):
         for file in files:
