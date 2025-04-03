@@ -189,6 +189,19 @@ def fileExists():
         return jsonify({"exists": exists})
     return jsonify({"Error"})
 
+# This should in theory display an html page that is loaded in the
+# Biology drive when doing to /webserver
+@app.route('/webserver')
+def new_page():
+    html_file_path = directory +"/biology-share/webserver/"
+    html_file_name = "hello.html"
+    for root, directories, files in os.walk(html_file_path):
+        for file in files:
+            if '.html' in file:
+                html_file_name = file
+    with open(html_file_path + html_file_name) as file:
+        html_template_content = file.read()
+    return render_template_string(html_template_content)
 
 @app.route('/', methods=['POST','GET'])
 def root():
