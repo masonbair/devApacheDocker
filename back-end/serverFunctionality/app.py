@@ -24,7 +24,7 @@ from macros.MacroManager import MacroManager
 from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, render_template_string, send_from_directory
 from werkzeug.utils import secure_filename
 import requests
 import file_manager
@@ -191,7 +191,7 @@ def fileExists():
 
 # This should in theory display an html page that is loaded in the
 # Biology drive when doing to /webserver
-@app.route('/webserver')
+@app.route('/dev')
 def new_page():
     html_file_path = directory +"/dev/"
     html_file_name = "hello.html"
