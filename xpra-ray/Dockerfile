@@ -42,6 +42,32 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends xpra-html5=16.2-r0-1 python3-requests && \
     rm -rf /var/lib/apt/lists/*
+
+# Install and Setup MESA for OpenGL on the CPU
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    libgl1-mesa-dri \
+    libgl1-mesa-glx \
+    libglu1-mesa \
+    mesa-utils \
+    libxi6 \
+    libxinerama1 \
+    perl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copies over and sets up VMD for visualization
+COPY vmd-2.0.0.bin.LINUXAMD64.tar.gz /tmp/vmd.tar.gz
+RUN cd /tmp && \
+    tar -xzf vmd.tar.gz && \
+    cd vmd-2.0.0 && \
+    ./configure LINUXAMD64 OPENGL OPENGLPBUFFER FLTK TK ACTC CXX11 IMD \
+    LIBSBALL XINERAMA XINPUT LIBTACHYON LIBPNG ZLIB VRPN NETCDF \
+    COLVARS TCL PTHREADS SILENT && \
+    cd src && \
+    make install && \
+    cd /tmp && \
+    rm -rf vmd-2.0.0 vmd.tar.gz
+
 # COpies over the created conda environment
 COPY --from=Build /opt/conda/envs/pyimagej /opt/conda/envs/pyimagej
 RUN echo "micromamba activate pyimagej" >> ~/.bashrc
