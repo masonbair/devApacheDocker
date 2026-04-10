@@ -47,7 +47,7 @@ fi
 
 a2enmod ssl
 a2enmod proxy_http
-a2enmod proxy_wstunne
+a2enmod proxy_wstunnel
 
 # Only enable if not already enabled
 if [ ! -L "/etc/apache2/sites-enabled/xpra-flask-apache.conf" ] && [ -f "/etc/apache2/sites-available/xpra-flask-apache.conf" ]; then

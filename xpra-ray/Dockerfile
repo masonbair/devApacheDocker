@@ -52,6 +52,7 @@ RUN apt-get update && \
     mesa-utils \
     libxi6 \
     libxinerama1 \
+    make \
     perl && \
     rm -rf /var/lib/apt/lists/*
 

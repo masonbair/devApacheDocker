@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
+  - setuptools
   - openjdk=8
   - "ray-default"
   - flask

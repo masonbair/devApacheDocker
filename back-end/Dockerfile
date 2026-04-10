@@ -25,7 +25,7 @@ RUN micromamba clean --dry-run --all \
 
 # For some reason these two lines are needed. I was never able to figure out exactly why they are needed
 RUN echo "micromamba activate pyimagej" >> ~/.bashrc
-ENV PATH /opt/conda/envs/pyimagej/bin/python3:$PATH
+ENV PATH /opt/conda/envs/pyimagej/bin:$PATH
 
 # sets the conda environment variable
 ENV CONDA_DEFAULT_ENV $(head -1 environment.yml | cut -d' ' -f2)
